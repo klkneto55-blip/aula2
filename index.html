@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NASA | Explorando o universo desde 1958</title>
+  <meta name="description" content="Uma viagem animada pela história e pelas missões da NASA: da Apollo 11 ao Telescópio Espacial James Webb e ao programa Artemis.">
+  <meta name="theme-color" content="#03050d">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%230b3d91'/%3E%3Cpath d='M6 40C20 20 44 18 60 26' stroke='%23fc3d21' stroke-width='5' fill='none'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+
+  <noscript>
+    <style>
+      .loader{display:none!important}
+      .reveal,.title .mask>span,.char{opacity:1!important;transform:none!important;filter:none!important}
+      body.is-loading{overflow:auto!important}
+    </style>
+  </noscript>
+</head>
+
+<body class="is-loading">
+
+  <!-- Tela de carregamento: contagem regressiva -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__inner">
+      <div class="loader__count" id="count">3</div>
+      <p class="loader__text">Preparando o lançamento</p>
+      <div class="loader__bar"><span></span></div>
+    </div>
+  </div>
+
+  <canvas id="stars" aria-hidden="true"></canvas>
+  <div class="cursor-glow" id="glow" aria-hidden="true"></div>
+  <div class="progress" id="progress" aria-hidden="true"></div>
+
+  <!-- MENU -->
+  <header class="header" id="header">
+    <a class="brand" href="#inicio" aria-label="NASA, ir para o início">
+      <span class="brand__mark" aria-hidden="true"></span>
+      <span class="brand__name">NASA</span>
+    </a>
+
+    <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="nav">
+      <span></span><span></span>
+    </button>
+
+    <nav class="nav" id="nav" aria-label="Principal">
+      <a href="#inicio" class="nav__link is-active">Início</a>
+      <a href="#historia" class="nav__link">História</a>
+      <a href="#missoes" class="nav__link">Missões</a>
+      <a href="#lancamento" class="nav__link">Lançamento</a>
+      <a href="#universo" class="nav__link">Universo</a>
+      <a href="#numeros" class="nav__link">Números</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <!-- HERO / TÍTULO -->
+    <section class="hero" id="inicio">
+      <div class="hero__glow" data-parallax="-0.1" aria-hidden="true"></div>
+
+      <div class="hero__planet" data-parallax="0.28">
+        <svg class="earth" viewBox="0 0 400 400" role="img" aria-label="Ilustração do planeta Terra girando">
+          <defs>
+            <radialGradient id="ocean" cx="35%" cy="30%" r="80%">
+              <stop offset="0" stop-color="#4c8dff"/>
+              <stop offset=".55" stop-color="#0b3d91"/>
+              <stop offset="1" stop-color="#040b26"/>
+            </radialGradient>
+            <radialGradient id="shade" cx="30%" cy="28%" r="78%">
+              <stop offset=".45" stop-color="#000" stop-opacity="0"/>
+              <stop offset="1" stop-color="#000" stop-opacity=".82"/>
+            </radialGradient>
+            <radialGradient id="atmo" cx="50%" cy="50%" r="50%">
+              <stop offset=".84" stop-color="#6aa8ff" stop-opacity="0"/>
+              <stop offset=".93" stop-color="#6aa8ff" stop-opacity=".55"/>
+              <stop offset="1" stop-color="#6aa8ff" stop-opacity="0"/>
+            </radialGradient>
+            <clipPath id="globe"><circle cx="200" cy="200" r="170"/></clipPath>
+          </defs>
+
+          <circle cx="200" cy="200" r="199" fill="url(#atmo)"/>
+          <circle cx="200" cy="200" r="170" fill="url(#ocean)"/>
+
+          <g clip-path="url(#globe)">
+            <g class="earth__land">
+              <g id="continents" fill="#2f8f5b" stroke="#7bd39a" stroke-opacity=".35" stroke-width="1.5">
+                <path d="M40 150C60 110 120 100 150 130C175 155 150 190 130 210C115 240 80 230 65 200C45 185 30 170 40 150Z"/>
+                <path d="M230 90C270 70 330 90 340 130C350 165 310 175 290 160C260 180 235 150 240 120Z"/>
+                <path d="M200 230C230 210 270 225 275 260C280 300 245 330 220 315C195 295 180 250 200 230Z"/>
+                <path d="M400 140C440 120 500 135 520 170C540 205 500 225 470 215C435 235 395 185 400 140Z"/>
+                <path d="M560 230C590 215 640 235 645 270C650 300 610 315 585 300C560 285 545 250 560 230Z"/>
+                <path d="M350 300C380 290 420 300 425 325C420 345 380 350 355 335Z"/>
+              </g>
+              <use href="#continents" x="680"/>
+            </g>
+            <g class="earth__clouds" fill="#fff" opacity=".35">
+              <ellipse cx="90" cy="120" rx="60" ry="8"/>
+              <ellipse cx="260" cy="200" rx="80" ry="9"/>
+              <ellipse cx="150" cy="290" rx="70" ry="7"/>
+              <ellipse cx="300" cy="120" rx="50" ry="6"/>
+              <ellipse cx="90" cy="120" rx="60" ry="8" transform="translate(680 0)"/>
+              <ellipse cx="260" cy="200" rx="80" ry="9" transform="translate(680 0)"/>
+              <ellipse cx="150" cy="290" rx="70" ry="7" transform="translate(680 0)"/>
+              <ellipse cx="300" cy="120" rx="50" ry="6" transform="translate(680 0)"/>
+            </g>
+          </g>
+          <circle cx="200" cy="200" r="170" fill="url(#shade)"/>
+        </svg>
+      </div>
+
+      <div class="hero__content">
+        <p class="hero__kicker reveal" data-delay="700">National Aeronautics and Space Administration</p>
+        <h1 class="hero__title" data-split>NASA</h1>
+        <p class="hero__lead reveal" data-delay="950">Desde 1958, levando a humanidade à Lua, a Marte e a lugares que nenhum mapa mostrava.</p>
+        <div class="hero__cta reveal" data-delay="1150">
+          <a class="btn btn--primary magnetic" href="#missoes"><span>Ver as missões</span></a>
+          <a class="btn btn--ghost magnetic" href="#historia"><span>Conhecer a história</span></a>
+        </div>
+      </div>
+
+      <a class="scroll-hint" href="#historia" aria-label="Rolar para a próxima seção">
+        <span class="scroll-hint__line"></span>
+        <span>Role</span>
+      </a>
+    </section>
+
+    <!-- FAIXA ROLANDO -->
+    <div class="marquee" aria-hidden="true" id="marquee">
+      <div class="marquee__track">
+        <span>Apollo ✦ Artemis ✦ Voyager ✦ Hubble ✦ James Webb ✦ Perseverance ✦ Estação Espacial ✦ Curiosity ✦ Juno ✦ New Horizons ✦ </span>
+        <span>Apollo ✦ Artemis ✦ Voyager ✦ Hubble ✦ James Webb ✦ Perseverance ✦ Estação Espacial ✦ Curiosity ✦ Juno ✦ New Horizons ✦ </span>
+      </div>
+    </div>
+
+    <!-- HISTÓRIA -->
+    <section class="section history" id="historia">
+      <div class="container history__grid">
+
+        <div class="history__art">
+          <div class="moonwrap reveal reveal--zoom">
+            <div data-parallax="0.12">
+              <svg class="moon" viewBox="0 0 400 400" role="img" aria-label="Ilustração da Lua com um astronauta flutuando">
+                <defs>
+                  <radialGradient id="moonG" cx="35%" cy="30%" r="80%">
+                    <stop offset="0" stop-color="#f1f2f8"/>
+                    <stop offset=".6" stop-color="#a3a8bd"/>
+                    <stop offset="1" stop-color="#3a3f58"/>
+                  </radialGradient>
+                </defs>
+                <circle cx="200" cy="200" r="180" fill="url(#moonG)"/>
+                <g fill="#5b6078" opacity=".35">
+                  <ellipse cx="140" cy="140" rx="34" ry="30"/>
+                  <ellipse cx="260" cy="120" rx="18" ry="16"/>
+                  <ellipse cx="290" cy="250" rx="42" ry="38"/>
+                  <ellipse cx="150" cy="270" rx="22" ry="20"/>
+                  <ellipse cx="220" cy="200" rx="12" ry="10"/>
+                  <ellipse cx="90" cy="230" rx="14" ry="12"/>
+                </g>
+                <g fill="#fff" opacity=".22">
+                  <ellipse cx="132" cy="132" rx="28" ry="24"/>
+                  <ellipse cx="282" cy="242" rx="34" ry="30"/>
+                </g>
+              </svg>
+            </div>
+
+            <svg class="astro" viewBox="0 0 120 170" role="img" aria-label="Astronauta">
+              <rect x="14" y="60" width="26" height="52" rx="13" fill="#cfd5ea"/>
+              <rect x="34" y="52" width="58" height="66" rx="22" fill="#eef1fb"/>
+              <rect x="42" y="78" width="26" height="18" rx="4" fill="#fc3d21"/>
+              <rect x="86" y="62" width="16" height="44" rx="8" fill="#e2e7f6" transform="rotate(-18 94 84)"/>
+              <rect x="6" y="66" width="16" height="42" rx="8" fill="#e2e7f6" transform="rotate(20 14 86)"/>
+              <rect x="38" y="110" width="20" height="46" rx="10" fill="#e2e7f6"/>
+              <rect x="66" y="110" width="20" height="46" rx="10" fill="#e2e7f6"/>
+              <rect x="34" y="148" width="26" height="14" rx="7" fill="#8590b8"/>
+              <rect x="64" y="148" width="26" height="14" rx="7" fill="#8590b8"/>
+              <circle cx="62" cy="36" r="28" fill="#f7f9ff"/>
+              <rect x="42" y="22" width="40" height="28" rx="14" fill="#0b1a4a"/>
+              <ellipse cx="54" cy="30" rx="8" ry="4" fill="#6aa8ff" opacity=".7"/>
+            </svg>
+          </div>
+
+          <div class="orbit-tag reveal reveal--left" data-delay="300">
+            <strong>29 de julho de 1958</strong>
+            <span>Assinada a lei que criou a NASA</span>
+          </div>
+        </div>
+
+        <div class="history__text">
+          <h2 class="title">
+            <span class="mask"><span>Nascida da</span></span>
+            <span class="mask"><span>corrida espacial</span></span>
+          </h2>
+
+          <div data-stagger>
+            <p>A NASA foi criada em 1958, depois que a União Soviética lançou o Sputnik e mostrou que o espaço seria o novo campo de disputa. Em poucos anos, uma agência recém-formada passou a coordenar voos tripulados, sondas robóticas e pesquisa aeronáutica.</p>
+            <p>Em 20 de julho de 1969, a Apollo 11 pousou na Lua e Neil Armstrong deixou a primeira pegada humana em outro mundo. Depois vieram os ônibus espaciais, a Estação Espacial Internacional e uma frota de telescópios e robôs que enxergam onde nenhuma pessoa consegue ir.</p>
+            <p>Hoje, com o programa Artemis, a agência prepara o retorno de astronautas à Lua como degrau para Marte.</p>
+          </div>
+
+          <a class="link-arrow magnetic reveal" href="#missoes" data-delay="200">Explorar as missões</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- MISSÕES: rolagem horizontal -->
+    <section class="hscroll" id="missoes" aria-label="Missões históricas">
+      <div class="hscroll__sticky">
+        <div class="hscroll__head container">
+          <h2 class="title">
+            <span class="mask"><span>Missões que</span></span>
+            <span class="mask"><span>mudaram tudo</span></span>
+          </h2>
+          <p class="hscroll__hint reveal" data-delay="300">Continue rolando para avançar pelos cartões.</p>
+        </div>
+
+        <div class="hscroll__track" id="track">
+
+          <article class="card mission">
+            <div class="card__icon">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><circle cx="32" cy="32" r="22"/><circle cx="24" cy="26" r="4"/><circle cx="40" cy="38" r="5"/><circle cx="26" cy="43" r="2"/></svg>
+            </div>
+            <span class="mission__year">1969</span>
+            <h3>Apollo 11</h3>
+            <p>Primeira missão tripulada a pousar na Lua. Armstrong e Aldrin caminharam na superfície enquanto Collins aguardava em órbita.</p>
+            <span class="tag">Lua</span>
+          </article>
+
+          <article class="card mission">
+            <div class="card__icon">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M8 20Q8 46 34 50Q34 24 8 20Z"/><path d="M21 35L46 14"/><circle cx="48" cy="12" r="3"/></svg>
+            </div>
+            <span class="mission__year">1977</span>
+            <h3>Voyager 1 e 2</h3>
+            <p>Sondas gêmeas que visitaram os planetas gigantes. A Voyager 1 é hoje o objeto humano mais distante da Terra, já no espaço interestelar.</p>
+            <span class="tag">Sistema solar externo</span>
+          </article>
+
+          <article class="card mission">
+            <div class="card__icon">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="24" width="30" height="16" rx="3"/><rect x="42" y="27" width="10" height="10"/><rect x="24" y="6" width="16" height="14"/><rect x="24" y="44" width="16" height="14"/></svg>
+            </div>
+            <span class="mission__year">1990</span>
+            <h3>Telescópio Hubble</h3>
+            <p>Acima da atmosfera, ele registra galáxias, nebulosas e ajudou a medir a idade e a expansão do universo. Segue ativo depois de mais de três décadas.</p>
+            <span class="tag">Astronomia</span>
+          </article>
+
+          <article class="card mission">
+            <div class="card__icon">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><rect x="12" y="24" width="38" height="12" rx="3"/><circle cx="18" cy="46" r="6"/><circle cx="31" cy="46" r="6"/><circle cx="44" cy="46" r="6"/><path d="M40 24l9-12"/><path d="M20 24v-8h10v8"/></svg>
+            </div>
+            <span class="mission__year">2021</span>
+            <h3>Perseverance</h3>
+            <p>O rover pousou na cratera Jezero, em Marte, para buscar sinais de vida antiga e guardar amostras de rocha para futuras missões.</p>
+            <span class="tag">Marte</span>
+          </article>
+
+          <article class="card mission">
+            <div class="card__icon">
+              <svg viewBox="0 0 64 64" aria-hidden="true">
+                <g id="hx"><polygon points="41,32 36.5,39.8 27.5,39.8 23,32 27.5,24.2 36.5,24.2"/></g>
+                <use href="#hx" y="-15.6"/><use href="#hx" y="15.6"/>
+                <use href="#hx" x="13.5" y="-7.8"/><use href="#hx" x="13.5" y="7.8"/>
+                <use href="#hx" x="-13.5" y="-7.8"/><use href="#hx" x="-13.5" y="7.8"/>
+              </svg>
+            </div>
+            <span class="mission__year">2021</span>
+            <h3>James Webb</h3>
+            <p>Seu espelho dourado de 18 segmentos observa em infravermelho as primeiras galáxias e a atmosfera de planetas ao redor de outras estrelas.</p>
+            <span class="tag">Universo primitivo</span>
+          </article>
+
+          <article class="card mission mission--last">
+            <div class="card__icon">
+              <svg viewBox="0 0 64 64" aria-hidden="true"><path d="M24 14h16l8 30H16z"/><path d="M20 50h24"/><path d="M28 54c2 6 6 6 8 0"/></svg>
+            </div>
+            <span class="mission__year">Artemis</span>
+            <h3>De volta à Lua</h3>
+            <p>Com a cápsula Orion e o foguete SLS, o programa quer levar a primeira mulher e a primeira pessoa não branca à superfície lunar.</p>
+            <span class="tag">Próxima fronteira</span>
+          </article>
+
+        </div>
+
+        <div class="hscroll__meter" aria-hidden="true"><span id="hbar"></span></div>
+      </div>
+    </section>
+
+    <!-- LANÇAMENTO: animação ligada à rolagem -->
+    <section class="launch" id="lancamento" aria-label="Sequência de lançamento">
+      <div class="launch__stage">
+        <div class="launch__sky" id="sky"></div>
+        <div class="launch__clouds" id="clouds" aria-hidden="true"><i></i><i></i><i></i><i></i></div>
+        <div class="launch__ground" id="ground" aria-hidden="true"><div class="tower"></div></div>
+
+        <div class="launch__rocketwrap" id="rocket">
+          <svg class="rocket" viewBox="0 0 100 300" role="img" aria-label="Foguete subindo">
+            <g class="flame" id="flame">
+              <path d="M50 232C36 250 40 285 50 300C60 285 64 250 50 232Z" fill="#ffb347"/>
+              <path d="M50 232C43 246 45 268 50 280C55 268 57 246 50 232Z" fill="#fff4cf"/>
+            </g>
+            <path d="M0 250L20 180V232Z" fill="#fc3d21"/>
+            <path d="M100 250L80 180V232Z" fill="#fc3d21"/>
+            <path d="M50 0C75 40 80 80 80 120V232H20V120C20 80 25 40 50 0Z" fill="#f4f6ff"/>
+            <path d="M20 150H80V166H20Z" fill="#0b3d91"/>
+            <path d="M50 0C60 16 66 32 69 50H31C34 32 40 16 50 0Z" fill="#fc3d21"/>
+            <circle cx="50" cy="96" r="13" fill="#0b1a4a" stroke="#cfd5ea" stroke-width="4"/>
+            <circle cx="46" cy="92" r="4" fill="#6aa8ff" opacity=".7"/>
+            <rect x="34" y="232" width="32" height="10" rx="3" fill="#8590b8"/>
+          </svg>
+        </div>
+
+        <div class="launch__hud">
+          <div><span>T+</span><b id="hudT">00:00</b></div>
+          <div><span>Altitude</span><b id="hudAlt">0 km</b></div>
+          <div><span>Velocidade</span><b id="hudVel">0 km/h</b></div>
+        </div>
+
+        <div class="launch__panel">
+          <h2 class="title">
+            <span class="mask"><span>Do solo</span></span>
+            <span class="mask"><span>à órbita</span></span>
+          </h2>
+          <ol class="stages" id="stages">
+            <li class="is-active">
+              <h3>Ignição e decolagem</h3>
+              <p>Os motores acendem e o foguete deixa a plataforma vencendo o próprio peso.</p>
+            </li>
+            <li>
+              <h3>Max-Q</h3>
+              <p>Cerca de um minuto depois, a pressão do ar sobre a estrutura atinge o máximo.</p>
+            </li>
+            <li>
+              <h3>Separação de estágios</h3>
+              <p>O primeiro estágio se solta e o segundo continua a subida, agora mais leve.</p>
+            </li>
+            <li>
+              <h3>Órbita</h3>
+              <p>A cerca de 400 km, a altitude da Estação Espacial Internacional, a nave chega a uns 27.600 km/h.</p>
+            </li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- UNIVERSO -->
+    <section class="section universe" id="universo">
+      <div class="container">
+        <div class="universe__head">
+          <h2 class="title">
+            <span class="mask"><span>Um universo</span></span>
+            <span class="mask"><span>para explorar</span></span>
+          </h2>
+          <p class="reveal" data-delay="250">A NASA estuda a Terra, o Sol, os planetas e o cosmos profundo. Passe o mouse sobre os cartões.</p>
+        </div>
+
+        <div class="grid" data-stagger>
+          <article class="card world tilt">
+            <div class="orb orb--moon" aria-hidden="true"></div>
+            <h3>Lua</h3>
+            <p>Alvo do Artemis. Cientistas querem estudar o gelo nas crateras polares e testar tecnologias para ir mais longe.</p>
+          </article>
+          <article class="card world tilt">
+            <div class="orb orb--mars" aria-hidden="true"></div>
+            <h3>Marte</h3>
+            <p>Rovers, helicópteros e orbitadores investigam se o planeta vermelho já foi habitável.</p>
+          </article>
+          <article class="card world tilt">
+            <div class="orb orb--jupiter" aria-hidden="true"></div>
+            <h3>Júpiter e Europa</h3>
+            <p>A sonda Juno estuda o gigante gasoso. A missão Europa Clipper vai examinar uma lua com oceano sob o gelo.</p>
+          </article>
+          <article class="card world tilt">
+            <div class="orb orb--earth" aria-hidden="true"></div>
+            <h3>Terra</h3>
+            <p>Satélites acompanham clima, oceanos, florestas e gelo, dados usados por governos e pesquisadores do mundo todo.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <!-- IMAGEM GRANDE + CITAÇÃO -->
+    <section class="quote" aria-label="Frase de Neil Armstrong">
+      <div class="quote__moon" data-parallax="-0.18" aria-hidden="true"></div>
+      <div class="container quote__inner">
+        <blockquote class="reveal reveal--zoom">
+          <p>Este é um pequeno passo para o homem, um salto gigante para a humanidade.</p>
+          <footer>Neil Armstrong, 20 de julho de 1969</footer>
+        </blockquote>
+      </div>
+    </section>
+
+    <!-- NÚMEROS -->
+    <section class="section numbers" id="numeros">
+      <div class="container">
+        <h2 class="title">
+          <span class="mask"><span>Alguns números</span></span>
+          <span class="mask"><span>da aventura</span></span>
+        </h2>
+
+        <div class="stats" data-stagger>
+          <div class="stat">
+            <strong class="num" data-count="1958">0</strong>
+            <span>ano de fundação da NASA</span>
+          </div>
+          <div class="stat">
+            <strong class="num" data-count="12">0</strong>
+            <span>pessoas caminharam na Lua</span>
+          </div>
+          <div class="stat">
+            <strong class="num" data-count="135">0</strong>
+            <span>missões do programa Space Shuttle</span>
+          </div>
+          <div class="stat">
+            <strong class="num" data-count="25" data-suffix="+">0</strong>
+            <span>anos de presença humana contínua na ISS</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CHAMADA FINAL -->
+    <section class="section cta">
+      <div class="container cta__inner">
+        <h2 class="title">
+          <span class="mask"><span>Continue</span></span>
+          <span class="mask"><span>explorando</span></span>
+        </h2>
+        <p class="reveal" data-delay="200">Fotos, notícias e dados abertos direto da fonte oficial.</p>
+        <div class="cta__links reveal" data-delay="350">
+          <a class="btn btn--primary magnetic" href="https://www.nasa.gov" target="_blank" rel="noopener"><span>nasa.gov</span></a>
+          <a class="btn btn--ghost magnetic" href="https://science.nasa.gov" target="_blank" rel="noopener"><span>Ciência da NASA</span></a>
+          <a class="btn btn--ghost magnetic" href="https://images.nasa.gov" target="_blank" rel="noopener"><span>Biblioteca de imagens</span></a>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- RODAPÉ -->
+  <footer class="footer">
+    <div class="container footer__grid">
+      <div class="footer__brand">
+        <a class="brand" href="#inicio">
+          <span class="brand__mark" aria-hidden="true"></span>
+          <span class="brand__name">NASA</span>
+        </a>
+        <p>Uma homenagem à agência que transforma perguntas sobre o cosmos em missões.</p>
+      </div>
+
+      <nav class="footer__col" aria-label="Rodapé: seções">
+        <h3>Seções</h3>
+        <a href="#historia">História</a>
+        <a href="#missoes">Missões</a>
+        <a href="#lancamento">Lançamento</a>
+        <a href="#universo">Universo</a>
+      </nav>
+
+      <nav class="footer__col" aria-label="Rodapé: links oficiais">
+        <h3>Fontes oficiais</h3>
+        <a href="https://www.nasa.gov" target="_blank" rel="noopener">nasa.gov</a>
+        <a href="https://science.nasa.gov" target="_blank" rel="noopener">science.nasa.gov</a>
+        <a href="https://images.nasa.gov" target="_blank" rel="noopener">images.nasa.gov</a>
+      </nav>
+    </div>
+
+    <div class="container footer__bottom">
+      <p>© <span id="year">2026</span> Projeto de fã, sem vínculo oficial com a NASA. Nome e marca pertencem aos seus titulares.</p>
+      <a href="#inicio" class="totop magnetic" aria-label="Voltar ao topo"><span>Voltar ao topo</span></a>
+    </div>
+  </footer>
+
+  <script src="style.js"></script>
+</body>
+</html>
